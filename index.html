@@ -3,118 +3,152 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="viewport" content="width=device-width, initial-scale=1">
 <title>JAN GAMES</title>
 <style>
-*{box-sizing:border-box}body{margin:0;background:#090e19;color:white;font-family:Arial,sans-serif}
-header{position:sticky;top:0;background:#111a2c;padding:17px 5%;display:flex;align-items:center;gap:20px;z-index:5;border-bottom:1px solid #293650}
-.logo{font-size:25px;font-weight:1000;white-space:nowrap}.logo span{color:#6795ff}
-input{flex:1;max-width:550px;background:#202c43;color:white;border:1px solid #34415e;border-radius:10px;padding:13px}
-main{max-width:1350px;margin:auto;padding:25px 5%}
-.hero{background:linear-gradient(110deg,#2349a0,#713ac4);border-radius:20px;padding:35px;display:flex;justify-content:space-between;align-items:center}
-.hero h1{font-size:clamp(35px,5vw,55px);margin:10px 0}.hero p{color:#e0e5ff}.heroart{font-size:100px}
-button{cursor:pointer;border:0;border-radius:9px;padding:11px 17px;font-weight:bold}
-.hero button{background:white;color:#182443}
-h2{margin:30px 0 15px}
-.categories{display:flex;gap:9px;overflow:auto;padding-bottom:10px}
-.cat{background:#18243a;color:white;border:1px solid #30405d;border-radius:25px;white-space:nowrap}
-.cat.active{background:#5b83ef}
-.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(175px,1fr));gap:16px}
-.card{background:#141e31;border:1px solid #293650;border-radius:15px;overflow:hidden;cursor:pointer;transition:.2s}
-.card:hover{transform:translateY(-5px);border-color:#7195ff}
-.cover{height:125px;display:grid;place-items:center;font-size:62px}
-.info{padding:13px}.info strong{display:block;margin-bottom:7px}.info small{color:#9baac3}
-#screen{display:none;position:fixed;inset:0;background:#080d18;z-index:10;overflow:auto;padding:15px}
-.bar{max-width:900px;margin:0 auto 15px;display:flex;justify-content:space-between;align-items:center}
-.bar button{background:#263650;color:white}
-#area{max-width:900px;min-height:430px;margin:auto;background:#121e32;border:1px solid #34435e;border-radius:15px;padding:20px;display:grid;place-items:center;text-align:center}
-canvas{background:#070d19;border-radius:10px;max-width:100%;touch-action:none}
-.gamebtn{background:#648cff;color:white;margin:6px}.big{font-size:38px;font-weight:900}
-footer{text-align:center;padding:35px;color:#8594ad}
-@media(max-width:600px){header{padding:13px;gap:10px}.logo{font-size:19px}.hero{padding:20px}.heroart{font-size:55px}.grid{grid-template-columns:repeat(2,minmax(0,1fr))}main{padding:15px}}
+*{box-sizing:border-box}
+body{margin:0;background:#10131d;color:white;font-family:Arial,sans-serif}
+header{background:#191e2c;padding:20px 5%;display:flex;align-items:center;gap:20px;flex-wrap:wrap}
+.logo{font-size:28px;font-weight:900;color:#70e0ff}
+input{padding:13px;border:0;border-radius:9px;background:#292f40;color:white;flex:1;min-width:180px}
+nav{display:flex;gap:10px;padding:15px 5%;overflow:auto}
+button{border:0;border-radius:8px;padding:11px 17px;background:#252c3d;color:white;cursor:pointer}
+button:hover{background:#465778}
+main{padding:10px 5%}
+#games{display:grid;grid-template-columns:repeat(auto-fill,minmax(170px,1fr));gap:17px}
+.game{background:#1c2231;border-radius:12px;overflow:hidden;cursor:pointer;transition:.2s}
+.game:hover{transform:translateY(-4px);background:#293248}
+.cover{height:125px;display:grid;place-items:center;font-size:50px;background:linear-gradient(135deg,#273b64,#594078)}
+.game p{padding:0 12px;font-weight:bold}
+#player{display:none}
+#player iframe{width:100%;height:75vh;border:0;border-radius:12px;background:#080a10}
+.back{margin-bottom:15px}
+.coming{margin-top:35px;padding:25px;background:#1c2231;border-radius:12px;text-align:center}
+.coming h2{color:#70e0ff}
+.small{color:#aab3c7}
+.gameLink{display:block;text-decoration:none;color:white}
 </style>
 </head>
 <body>
-<header><div class="logo">JAN<span>GAMES</span></div><input id="search" placeholder="Search games..." oninput="render()"></header>
+
+<header>
+<div class="logo">JAN GAMES</div>
+<input id="search" placeholder="Search games..." oninput="render()">
+</header>
+
+<nav>
+<button onclick="setCategory('All')">All</button>
+<button onclick="setCategory('FNF')">FNF</button>
+<button onclick="setCategory('Horror')">Horror</button>
+<button onclick="setCategory('Racing')">Racing</button>
+<button onclick="setCategory('Action')">Action</button>
+</nav>
+
 <main>
-<section class="hero">
-<div><div>WELCOME TO JAN GAMES</div><h1>PLAY SOMETHING<br>AWESOME</h1><p>Free browser games. No downloads. Just play.</p><button onclick="document.getElementById('games').scrollIntoView({behavior:'smooth'})">PLAY NOW →</button></div>
-<div class="heroart">🎮</div>
-</section>
-<h2>Categories</h2><div class="categories" id="categories"></div>
-<h2 id="games">All games</h2><div class="grid" id="grid"></div>
-</main>
-<footer>JAN GAMES © 2026 · Made for gamers</footer>
-<div id="screen">
-<div class="bar"><button onclick="closeGame()">← BACK</button><strong id="gameTitle"></strong><button onclick="startGame()">RESTART</button></div>
-<div id="area"></div>
+<section id="home">
+<h2>Popular Games</h2>
+<p class="small">Welcome to JAN GAMES</p>
+<div id="games"></div>
+
+<div class="coming">
+<h2>MORE COMING SOON</h2>
+<p>New games are being added soon</p>
 </div>
+</section>
+
+<section id="player">
+<button class="back" onclick="closeGame()">← Back to games</button>
+<button onclick="fullscreen()">⛶ Fullscreen</button>
+<h2 id="gameTitle"></h2>
+<iframe id="gameFrame" allowfullscreen></iframe>
+<p class="small">If the game does not load, open it on Play-Games.com using the link below.</p>
+<a id="originalLink" class="gameLink" target="_blank" rel="noopener">Open original game page ↗</a>
+</section>
+</main>
+
+<footer style="text-align:center;padding:30px;color:#8993aa">
+Created by Jan Budak
+</footer>
+
 <script>
 const games=[
-["snake","Neon Snake","🐍","Arcade","#064e3b"],
-["clicker","Mega Clicker","💰","Casual","#713f12"],
-["memory","Memory Match","🧠","Puzzle","#4c1d95"],
-["reaction","Reaction Rush","⚡","Arcade","#7f1d1d"],
-["dodge","Meteor Dodge","☄️","Arcade","#153b69"],
-["math","Math Master","🔢","Puzzle","#35458a"],
-["rps","Rock Paper Scissors","✊","Casual","#73408c"],
-["coin","Coin Catcher","🪙","Arcade","#80551a"],
-["typing","Typing Race","⌨️","Skill","#125c65"],
-["guess","Number Guess","🎯","Puzzle","#49377b"],
-["color","Color Match","🎨","Puzzle","#9b386a"],
-["tap","Tap Frenzy","👆","Casual","#9a511d"],
-["pong","Mini Pong","🏓","Sports","#185e52"],
-["breakout","Brick Breaker","🧱","Arcade","#713e9b"],
-["runner","Pixel Runner","🏃","Adventure","#365e33"],
-["quiz","Quick Quiz","❓","Puzzle","#384d8e"],
-["aim","Target Trainer","🎯","Skill","#873c3c"],
-["dice","Dice Duel","🎲","Casual","#71511b"],
-["flappy","Flappy Bird","🐤","Arcade","#386a8c"],
-["whack","Whack-a-Mole","🔨","Arcade","#594b32"]
-].map(([id,name,icon,cat,color])=>({id,name,icon,cat,color}));
-let category="All",current="",timer=null,cleanup=null;
-const cats=["All","Arcade","Casual","Puzzle","Sports","Skill","Adventure"];
-document.getElementById("categories").innerHTML=cats.map(c=>`<button class="cat ${c==="All"?"active":""}" onclick="choose('${c}',this)">${c}</button>`).join("");
+{
+name:"FNF Aura Funkin: South America",
+category:"FNF",
+icon:"🎤",
+url:"https://www.play-games.com/game/41090/fnf-aura-funkin-at-south-america.html"
+},
+{
+name:"FNF South Park's Turmoil: Bloodbath",
+category:"FNF",
+icon:"🎵",
+url:"https://www.play-games.com/game/41116/fnf-south-parks-turmoil-bloodbath.html"
+},
+{
+name:"Counter Terror 2: Global Standout",
+category:"Action",
+icon:"🎯",
+url:"https://www.play-games.com/game/41128/counter-terror-2-global-standout.html"
+},
+{
+name:"FNAF World",
+category:"Horror",
+icon:"🐻",
+url:"https://www.play-games.com/game/25899/fnaf-world.html"
+},
+{
+name:"Pro Racing: Racing 3D",
+category:"Racing",
+icon:"🏎️",
+url:"https://www.play-games.com/game/40759/pro-racing-racing-3d.html"
+}
+];
+
+let category="All";
+
+function setCategory(value){
+category=value;
+render();
+}
+
 function render(){
-let q=document.getElementById("search").value.toLowerCase(),g=document.getElementById("grid");g.innerHTML="";
-games.filter(x=>(category==="All"||x.cat===category)&&(x.name.toLowerCase().includes(q)||x.cat.toLowerCase().includes(q))).forEach(x=>{
-let d=document.createElement("div");d.className="card";
-d.innerHTML=`<div class="cover" style="background:linear-gradient(135deg,${x.color},#101b39)">${x.icon}</div><div class="info"><strong>${x.name}</strong><small>${x.cat} · Free to play</small></div>`;
-d.onclick=()=>openGame(x.id);g.appendChild(d);
-});
+const search=document.getElementById("search").value.toLowerCase();
+const list=games.filter(g=>
+(category==="All"||g.category===category)&&
+g.name.toLowerCase().includes(search)
+);
+
+document.getElementById("games").innerHTML=list.map(g=>`
+<div class="game" onclick="openGame(${games.indexOf(g)})">
+<div class="cover">${g.icon}</div>
+<p>${g.name}</p>
+</div>
+`).join("");
 }
-function choose(c,b){category=c;document.querySelectorAll(".cat").forEach(x=>x.classList.remove("active"));b.classList.add("active");render()}
-function openGame(id){current=id;document.getElementById("screen").style.display="block";document.getElementById("gameTitle").textContent=games.find(x=>x.id===id).name;startGame()}
-function closeGame(){clearInterval(timer);clearTimeout(timer);if(cleanup)cleanup();document.getElementById("screen").style.display="none"}
-function startGame(){clearInterval(timer);clearTimeout(timer);if(cleanup)cleanup();cleanup=null;let a=document.getElementById("area");a.innerHTML="";({snake,clicker,memory,reaction,dodge,math,rps,coin,typing,guess,color,tap,pong,breakout,runner,quiz,aim,dice,flappy,whack}[current]||clicker)(a)}
-function button(a,text,fn){let b=document.createElement("button");b.className="gamebtn";b.textContent=text;b.onclick=fn;a.appendChild(b);return b}
-function heading(a,title,desc){let h=document.createElement("div");h.innerHTML=`<h2>${title}</h2><p>${desc}</p>`;a.appendChild(h)}
-function clicker(a){let n=0,l=1,p=20;function draw(){a.innerHTML=`<div><h2>💰 MEGA CLICKER</h2><div class="big">${n} coins</div><p>Power: ${l}</p><button class="gamebtn" id="earn">CLICK TO EARN</button><button class="gamebtn" id="up">UPGRADE ${p}</button></div>`;a.querySelector("#earn").onclick=()=>{n+=l;draw()};a.querySelector("#up").onclick=()=>{if(n>=p){n-=p;l++;p=Math.ceil(p*1.7);draw()}}}draw()}
-function reaction(a){heading(a,"⚡ REACTION RUSH","Wait until green then click");let b=button(a,"START",()=>{b.disabled=true;b.textContent="WAIT...";a.style.background="#791f32";timer=setTimeout(()=>{let t=performance.now();a.style.background="#075b42";b.disabled=false;b.textContent="CLICK NOW";b.onclick=()=>{a.querySelector("p").textContent=Math.round(performance.now()-t)+" milliseconds";b.textContent="PLAY AGAIN";b.onclick=()=>startGame()}},1200+Math.random()*2500)})}
-function memory(a){heading(a,"🧠 MEMORY MATCH","Find all matching pairs");let icons=["🐸","🚀","🍕","👾","🌈","⚽","🐸","🚀","🍕","👾","🌈","⚽"].sort(()=>Math.random()-.5),first=null,lock=false,done=0,moves=0;let g=document.createElement("div");g.style.cssText="display:grid;grid-template-columns:repeat(4,65px);gap:8px";a.appendChild(g);let info=document.createElement("p");a.appendChild(info);icons.forEach(icon=>{let b=button(g,"?",()=>{if(lock||b.dataset.done||b===first)return;b.textContent=icon;if(!first){first=b;return}moves++;if(first.textContent===icon){first.dataset.done=1;b.dataset.done=1;first=null;done+=2}else{lock=true;let old=first;first=null;setTimeout(()=>{old.textContent="?";b.textContent="?";lock=false},650)}info.textContent=`Moves ${moves} · Matched ${done}/12`;if(done===12)info.textContent="YOU WIN!"})})}
-function guess(a){heading(a,"🎯 NUMBER GUESS","Guess a number from 1 to 100");let n=Math.ceil(Math.random()*100),i=document.createElement("input");i.type="number";i.placeholder="Your guess";i.style.maxWidth="160px";a.appendChild(i);let p=document.createElement("p");a.appendChild(p);button(a,"GUESS",()=>{let v=Number(i.value);p.textContent=v===n?"CORRECT! YOU WIN!":v<n?"Too low!":"Too high!"})}
-function rps(a){heading(a,"✊ ROCK PAPER SCISSORS","Choose your move");let p=document.createElement("p");a.appendChild(p);["Rock","Paper","Scissors"].forEach(x=>button(a,x,()=>{let y=["Rock","Paper","Scissors"][Math.floor(Math.random()*3)];p.textContent=`You: ${x} · Computer: ${y} · ${x===y?"DRAW":({Rock:"Scissors",Paper:"Rock",Scissors:"Paper"}[x]===y?"YOU WIN":"YOU LOSE")}`}))}
-function math(a){let n=0;heading(a,"🔢 MATH MASTER","Solve as many as you can");let p=document.createElement("p"),i=document.createElement("input");i.style.maxWidth="130px";a.append(p,i);function next(){let x=1+Math.floor(Math.random()*20),y=1+Math.floor(Math.random()*20),ans=x+y;p.textContent=`${x} + ${y} = ? | Score: ${n}`;i.value="";button(a,"CHECK",()=>{if(Number(i.value)===ans)n++;next()})}next()}
-function tap(a){let n=0;heading(a,"👆 TAP FRENZY","Tap as fast as you can in 10 seconds");let p=document.createElement("p");a.appendChild(p);let b=button(a,"START",()=>{n=0;b.textContent="TAP!";b.onclick=()=>{n++;p.textContent="Score: "+n};timer=setTimeout(()=>{b.disabled=true;p.textContent="TIME UP! Score: "+n},10000)})}
-function coin(a){let n=0;heading(a,"🪙 COIN CATCHER","Collect coins with the button");let p=document.createElement("p");a.appendChild(p);button(a,"CATCH COIN",()=>{n++;p.textContent="Coins: "+n})}
-function color(a){heading(a,"🎨 COLOR MATCH","Click the button matching the color name");let colors=["RED","BLUE","GREEN","PURPLE"],p=document.createElement("p"),n=0;a.appendChild(p);function next(){let c=colors[Math.floor(Math.random()*4)];p.textContent="Find "+c+" · Score "+n;colors.forEach(x=>button(a,x,()=>{if(x===c)n++;next()}))}next()}
-function dice(a){heading(a,"🎲 DICE DUEL","Roll against the computer");let p=document.createElement("p");a.appendChild(p);button(a,"ROLL",()=>{let x=1+Math.floor(Math.random()*6),y=1+Math.floor(Math.random()*6);p.textContent=`You rolled ${x}. Computer rolled ${y}. ${x===y?"DRAW":x>y?"YOU WIN":"YOU LOSE"}`})}
-function quiz(a){let questions=[["What is 5 × 5?",25],["How many days in a week?",7],["What is 12 + 8?",20],["How many sides has a triangle?",3]],i=0,n=0;heading(a,"❓ QUICK QUIZ","Answer all questions");let p=document.createElement("p");a.appendChild(p);function next(){if(i===questions.length){p.textContent=`Finished! Score ${n}/${questions.length}`;return}p.textContent=questions[i][0];let inp=document.createElement("input");inp.type="number";inp.style.maxWidth="100px";a.appendChild(inp);button(a,"ANSWER",()=>{if(+inp.value===questions[i][1])n++;i++;inp.remove();next()})}next()}
-function typing(a){heading(a,"⌨️ TYPING RACE","Type the word shown");let words=["JUMP","ROCKET","GAMING","PLANET","PIXEL","TURBO"],word=words[Math.floor(Math.random()*words.length)],p=document.createElement("p");p.textContent=word;a.appendChild(p);let i=document.createElement("input");i.placeholder="Type here";i.style.maxWidth="180px";a.appendChild(i);button(a,"CHECK",()=>{p.textContent=i.value.toUpperCase()===word?"CORRECT!":"TRY AGAIN";})}
-function aim(a){heading(a,"🎯 TARGET TRAINER","Hit the target");let n=0,b=button(a,"🎯",()=>{n++;b.textContent="🎯 "+n;b.style.transform=`translate(${Math.random()*80-40}px,${Math.random()*50-25}px)`});b.style.fontSize="50px"}
-function dodge(a){heading(a,"☄️ METEOR DODGE","Avoid the falling meteors");let n=0,p=document.createElement("p");p.textContent="Score: 0";a.appendChild(p);let b=button(a,"DODGE!",()=>{n++;p.textContent="Score: "+n+" · Keep dodging!"})}
-function whack(a){heading(a,"🔨 WHACK A MOLE","Find the mole");let p=document.createElement("p");a.appendChild(p);let n=0;for(let i=0;i<9;i++)button(a,"🕳️",e=>{}).onclick=function(){if(this.textContent==="🐹"){n++;p.textContent="Score: "+n;this.textContent="🕳️"}};let buttons=[...a.querySelectorAll("button")];function mole(){buttons.forEach(b=>b.textContent="🕳️");buttons[Math.floor(Math.random()*9)].textContent="🐹"}mole();timer=setInterval(mole,900)}
-function snake(a){
-heading(a,"🐍 NEON SNAKE","Use arrow keys or WASD");let c=document.createElement("canvas");c.width=400;c.height=400;a.appendChild(c);let ctx=c.getContext("2d"),body=[{x:8,y:10},{x:7,y:10}],d={x:1,y:0},food={x:13,y:10},score=0,dead=false;
-function key(e){let map={ArrowUp:[0,-1],w:[0,-1],ArrowDown:[0,1],s:[0,1],ArrowLeft:[-1,0],a:[-1,0],ArrowRight:[1,0],d:[1,0]},v=map[e.key];if(v&&!(v[0]===-d.x&&v[1]===-d.y)){d={x:v[0],y:v[1]};e.preventDefault()}}
-window.addEventListener("keydown",key);cleanup=()=>window.removeEventListener("keydown",key);
-timer=setInterval(()=>{if(dead)return;let h={x:body[0].x+d.x,y:body[0].y+d.y};if(h.x<0||h.x>=20||h.y<0||h.y>=20||body.some(p=>p.x===h.x&&p.y===h.y)){dead=true;ctx.fillStyle="white";ctx.font="25px Arial";ctx.fillText("GAME OVER · "+score,100,200);return}body.unshift(h);if(h.x===food.x&&h.y===food.y){score++;food={x:Math.random()*20|0,y:Math.random()*20|0}}else body.pop();ctx.fillStyle="#080e19";ctx.fillRect(0,0,400,400);ctx.fillStyle="#ff496b";ctx.fillRect(food.x*20,food.y*20,18,18);body.forEach((p,i)=>{ctx.fillStyle=i?"#12bd8a":"#9affd6";ctx.fillRect(p.x*20,p.y*20,18,18)})},110);
+
+function openGame(index){
+const game=games[index];
+document.getElementById("home").style.display="none";
+document.getElementById("player").style.display="block";
+document.getElementById("gameTitle").textContent=game.name;
+document.getElementById("originalLink").href=game.url;
+document.getElementById("gameFrame").src=game.url;
+window.scrollTo(0,0);
 }
-function pong(a){heading(a,"🏓 MINI PONG","Move your mouse over the game to control the paddle");let c=document.createElement("canvas");c.width=600;c.height=350;a.appendChild(c);let x=300,y=170,dx=4,dy=3,py=140,score=0,ctx=c.getContext("2d");c.onmousemove=e=>{py=(e.offsetY/c.clientHeight)*350-35};timer=setInterval(()=>{x+=dx;y+=dy;if(y<8||y>342)dy=-dy;if(x>570&&y>py&&y<py+70){dx=-dx;score++}if(x<25){dx=-dx}if(x>600){x=300;y=170}ctx.fillStyle="#070d19";ctx.fillRect(0,0,600,350);ctx.fillStyle="#fff";ctx.fillRect(10,py,12,70);ctx.fillRect(x,y,12,12);ctx.font="20px Arial";ctx.fillText("Score "+score,270,30)},20)}
-function breakout(a){heading(a,"🧱 BRICK BREAKER","Move your mouse to control the paddle");let c=document.createElement("canvas");c.width=600;c.height=350;a.appendChild(c);let ctx=c.getContext("2d"),x=300,y=220,dx=3,dy=-4,p=260,bricks=Array.from({length:24},(_,i)=>({x:20+i%8*72,y:25+Math.floor(i/8)*27,on:true}));c.onmousemove=e=>p=e.offsetX/c.clientWidth*600-45;timer=setInterval(()=>{x+=dx;y+=dy;if(x<8||x>592)dx=-dx;if(y<8)dy=-dy;if(y>310&&x>p&&x<p+90)dy=-Math.abs(dy);bricks.forEach(b=>{if(b.on&&x>b.x&&x<b.x+60&&y>b.y&&y<b.y+18){b.on=false;dy=-dy}});if(y>350){x=300;y=220}ctx.fillStyle="#080e19";ctx.fillRect(0,0,600,350);bricks.filter(b=>b.on).forEach(b=>{ctx.fillStyle="#698dff";ctx.fillRect(b.x,b.y,60,18)});ctx.fillStyle="#fff";ctx.fillRect(p,325,90,10);ctx.fillRect(x,y,10,10)},20)}
-function runner(a){heading(a,"🏃 PIXEL RUNNER","Press SPACE to jump over obstacles");let c=document.createElement("canvas");c.width=600;c.height=260;a.appendChild(c);let ctx=c.getContext("2d"),y=200,v=0,obs=600,score=0,dead=false;function key(e){if(e.code==="Space"&&y>=200)v=-12}window.addEventListener("keydown",key);cleanup=()=>window.removeEventListener("keydown",key);timer=setInterval(()=>{if(dead)return;v+=.6;y=Math.min(200,y+v);obs-=6;if(obs<0)obs=600;if(obs<65&&obs>25&&y>170)dead=true;ctx.fillStyle="#080e19";ctx.fillRect(0,0,600,260);ctx.fillStyle="#36dba2";ctx.fillRect(50,y,35,35);ctx.fillStyle="#ff4f72";ctx.fillRect(obs,205,25,30);ctx.fillStyle="white";ctx.fillText("Score "+(++score),15,20);if(dead){ctx.font="28px Arial";ctx.fillText("GAME OVER",240,120)}},25)}
-function flappy(a){heading(a,"🐤 FLAPPY BIRD","Click or press SPACE to fly");let c=document.createElement("canvas");c.width=400;c.height=500;a.appendChild(c);let ctx=c.getContext("2d"),y=230,v=0,pipe=400,dead=false,score=0;function flap(){if(!dead)v=-7}c.onclick=flap;function key(e){if(e.code==="Space")flap()}window.addEventListener("keydown",key);cleanup=()=>window.removeEventListener("keydown",key);timer=setInterval(()=>{if(!dead){v+=.35;y+=v;pipe-=3;if(pipe< -60){pipe=450;score++}if(y<0||y>500||(pipe<100&&pipe>20&&(y<140||y>350)))dead=true}ctx.fillStyle="#10284b";ctx.fillRect(0,0,400,500);ctx.fillStyle="#34dba3";ctx.fillRect(pipe,0,55,140);ctx.fillRect(pipe,350,55,150);ctx.fillStyle="#ffd166";ctx.fillRect(100,y,25,25);ctx.fillStyle="white";ctx.font="20px Arial";ctx.fillText("Score "+score,15,30);if(dead)ctx.fillText("GAME OVER",145,250)},20)}
+
+function closeGame(){
+document.getElementById("gameFrame").src="";
+document.getElementById("player").style.display="none";
+document.getElementById("home").style.display="block";
+}
+
+function fullscreen(){
+const frame=document.getElementById("gameFrame");
+if(frame.requestFullscreen)frame.requestFullscreen();
+}
+
 render();
 </script>
 </body>
 </html>
+
