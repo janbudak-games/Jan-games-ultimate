@@ -9,24 +9,27 @@
 *{box-sizing:border-box}
 body{margin:0;background:#10131d;color:white;font-family:Arial,sans-serif}
 header{background:#191e2c;padding:20px 5%;display:flex;align-items:center;gap:20px;flex-wrap:wrap}
-.logo{font-size:28px;font-weight:900;color:#70e0ff}
+.logo{font-size:29px;font-weight:900;color:#70e0ff}
 input{padding:13px;border:0;border-radius:9px;background:#292f40;color:white;flex:1;min-width:180px}
 nav{display:flex;gap:10px;padding:15px 5%;overflow:auto}
-button{border:0;border-radius:8px;padding:11px 17px;background:#252c3d;color:white;cursor:pointer}
+button{border:0;border-radius:8px;padding:11px 17px;background:#252c3d;color:white;cursor:pointer;color:white}
 button:hover{background:#465778}
 main{padding:10px 5%}
-#games{display:grid;grid-template-columns:repeat(auto-fill,minmax(170px,1fr));gap:17px}
+#games{display:grid;grid-template-columns:repeat(auto-fill,minmax(165px,1fr));gap:17px}
 .game{background:#1c2231;border-radius:12px;overflow:hidden;cursor:pointer;transition:.2s}
 .game:hover{transform:translateY(-4px);background:#293248}
 .cover{height:125px;display:grid;place-items:center;font-size:50px;background:linear-gradient(135deg,#273b64,#594078)}
 .game p{padding:0 12px;font-weight:bold}
+.tag{padding:0 12px 12px;color:#70e0ff;font-size:12px}
 #player{display:none}
-#player iframe{width:100%;height:75vh;border:0;border-radius:12px;background:#080a10}
+#gameFrame{width:100%;height:75vh;border:0;border-radius:12px;background:#080a10}
 .back{margin-bottom:15px}
 .coming{margin-top:35px;padding:25px;background:#1c2231;border-radius:12px;text-align:center}
 .coming h2{color:#70e0ff}
 .small{color:#aab3c7}
-.gameLink{display:block;text-decoration:none;color:white}
+#fallback{display:none;margin-top:15px;padding:15px;background:#1c2231;border-radius:10px}
+a{color:#70e0ff}
+footer{text-align:center;padding:30px;color:#8993aa}
 </style>
 </head>
 <body>
@@ -39,7 +42,7 @@ main{padding:10px 5%}
 <nav>
 <button onclick="setCategory('All')">All</button>
 <button onclick="setCategory('FNF')">FNF</button>
-<button onclick="setCategory('Horror')">Horror</button>
+<button onclick="setCategory('FNAF')">FNAF</button>
 <button onclick="setCategory('Racing')">Racing</button>
 <button onclick="setCategory('Action')">Action</button>
 </nav>
@@ -57,50 +60,81 @@ main{padding:10px 5%}
 </section>
 
 <section id="player">
-<button class="back" onclick="closeGame()">← Back to games</button>
+<button class="back" onclick="closeGame()">← Back</button>
 <button onclick="fullscreen()">⛶ Fullscreen</button>
 <h2 id="gameTitle"></h2>
-<iframe id="gameFrame" allowfullscreen></iframe>
-<p class="small">If the game does not load, open it on Play-Games.com using the link below.</p>
-<a id="originalLink" class="gameLink" target="_blank" rel="noopener">Open original game page ↗</a>
+
+<iframe id="gameFrame"
+allowfullscreen
+allow="fullscreen; autoplay; gamepad"
+referrerpolicy="strict-origin-when-cross-origin">
+</iframe>
+
+<div id="fallback">
+<p>This website may block embedded games.</p>
+<a id="originalLink" target="_blank" rel="noopener">Open the game directly ↗</a>
+</div>
 </section>
 </main>
 
-<footer style="text-align:center;padding:30px;color:#8993aa">
-Created by Jan Budak
-</footer>
+<footer>Created by Jan Budak</footer>
 
 <script>
 const games=[
 {
 name:"FNF Aura Funkin: South America",
-category:"FNF",
-icon:"🎤",
-url:"https://www.play-games.com/game/41090/fnf-aura-funkin-at-south-america.html"
+category:"FNF",icon:"🎤",
+url:"https://fnf-games.io/fnf-aura-funkin-at-south-america"
 },
 {
 name:"FNF South Park's Turmoil: Bloodbath",
-category:"FNF",
-icon:"🎵",
+category:"FNF",icon:"🎵",
 url:"https://www.play-games.com/game/41116/fnf-south-parks-turmoil-bloodbath.html"
 },
 {
+name:"Friday Night Funkin",
+category:"FNF",icon:"🎧",
+url:"https://www.newgrounds.com/portal/view/770371"
+},
+{
+name:"FNF Mods",
+category:"FNF",icon:"🎶",
+url:"https://fnfmod.org/"
+},
+{
 name:"Counter Terror 2: Global Standout",
-category:"Action",
-icon:"🎯",
+category:"Action",icon:"🎯",
 url:"https://www.play-games.com/game/41128/counter-terror-2-global-standout.html"
 },
 {
 name:"FNAF World",
-category:"Horror",
-icon:"🐻",
-url:"https://www.play-games.com/game/25899/fnaf-world.html"
+category:"FNAF",icon:"🐻",
+url:"https://fnafworld.net/"
+},
+{
+name:"FNAF Games Collection",
+category:"FNAF",icon:"🐰",
+url:"https://fnaf.co/games"
 },
 {
 name:"Pro Racing: Racing 3D",
-category:"Racing",
-icon:"🏎️",
+category:"Racing",icon:"🏎️",
 url:"https://www.play-games.com/game/40759/pro-racing-racing-3d.html"
+},
+{
+name:"Brakeless",
+category:"Racing",icon:"🚗",
+url:"https://brakeless.io/"
+},
+{
+name:"RaceCraft",
+category:"Racing",icon:"🏁",
+url:"https://playracecraft.nl/"
+},
+{
+name:"Overdrive Racing",
+category:"Racing",icon:"🏎️",
+url:"https://overdriveracing.itch.io/overdrive"
 }
 ];
 
@@ -113,6 +147,7 @@ render();
 
 function render(){
 const search=document.getElementById("search").value.toLowerCase();
+
 const list=games.filter(g=>
 (category==="All"||g.category===category)&&
 g.name.toLowerCase().includes(search)
@@ -122,17 +157,21 @@ document.getElementById("games").innerHTML=list.map(g=>`
 <div class="game" onclick="openGame(${games.indexOf(g)})">
 <div class="cover">${g.icon}</div>
 <p>${g.name}</p>
+<div class="tag">${g.category}</div>
 </div>
 `).join("");
 }
 
 function openGame(index){
 const game=games[index];
+
 document.getElementById("home").style.display="none";
 document.getElementById("player").style.display="block";
 document.getElementById("gameTitle").textContent=game.name;
 document.getElementById("originalLink").href=game.url;
+document.getElementById("fallback").style.display="block";
 document.getElementById("gameFrame").src=game.url;
+
 window.scrollTo(0,0);
 }
 
@@ -151,4 +190,3 @@ render();
 </script>
 </body>
 </html>
-
