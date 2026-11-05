@@ -3,190 +3,109 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<title>JAN GAMES</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Jan Games</title>
+
 <style>
-*{box-sizing:border-box}
-body{margin:0;background:#10131d;color:white;font-family:Arial,sans-serif}
-header{background:#191e2c;padding:20px 5%;display:flex;align-items:center;gap:20px;flex-wrap:wrap}
-.logo{font-size:29px;font-weight:900;color:#70e0ff}
-input{padding:13px;border:0;border-radius:9px;background:#292f40;color:white;flex:1;min-width:180px}
-nav{display:flex;gap:10px;padding:15px 5%;overflow:auto}
-button{border:0;border-radius:8px;padding:11px 17px;background:#252c3d;color:white;cursor:pointer;color:white}
-button:hover{background:#465778}
-main{padding:10px 5%}
-#games{display:grid;grid-template-columns:repeat(auto-fill,minmax(165px,1fr));gap:17px}
-.game{background:#1c2231;border-radius:12px;overflow:hidden;cursor:pointer;transition:.2s}
-.game:hover{transform:translateY(-4px);background:#293248}
-.cover{height:125px;display:grid;place-items:center;font-size:50px;background:linear-gradient(135deg,#273b64,#594078)}
-.game p{padding:0 12px;font-weight:bold}
-.tag{padding:0 12px 12px;color:#70e0ff;font-size:12px}
-#player{display:none}
-#gameFrame{width:100%;height:75vh;border:0;border-radius:12px;background:#080a10}
-.back{margin-bottom:15px}
-.coming{margin-top:35px;padding:25px;background:#1c2231;border-radius:12px;text-align:center}
-.coming h2{color:#70e0ff}
-.small{color:#aab3c7}
-#fallback{display:none;margin-top:15px;padding:15px;background:#1c2231;border-radius:10px}
-a{color:#70e0ff}
-footer{text-align:center;padding:30px;color:#8993aa}
+body {
+  margin: 0;
+  background: #10121c;
+  color: white;
+  font-family: Arial, sans-serif;
+}
+header {
+  padding: 25px;
+  text-align: center;
+  background: #191d2d;
+}
+h1 { color: #7c8cff; }
+.container {
+  max-width: 1100px;
+  margin: auto;
+  padding: 20px;
+}
+.games {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 20px;
+}
+.game {
+  background: #202538;
+  border-radius: 12px;
+  overflow: hidden;
+}
+.game h2 {
+  padding: 12px;
+  font-size: 18px;
+}
+.game iframe {
+  width: 100%;
+  height: 280px;
+  border: none;
+}
+button {
+  background: #7185ff;
+  color: white;
+  border: none;
+  padding: 10px 15px;
+  margin: 10px;
+  border-radius: 7px;
+  cursor: pointer;
+}
+footer {
+  text-align: center;
+  padding: 25px;
+  color: #aaa;
+}
 </style>
 </head>
+
 <body>
 
 <header>
-<div class="logo">JAN GAMES</div>
-<input id="search" placeholder="Search games..." oninput="render()">
+<h1>JAN GAMES</h1>
+<p>Play your favorite games online</p>
 </header>
 
-<nav>
-<button onclick="setCategory('All')">All</button>
-<button onclick="setCategory('FNF')">FNF</button>
-<button onclick="setCategory('FNAF')">FNAF</button>
-<button onclick="setCategory('Racing')">Racing</button>
-<button onclick="setCategory('Action')">Action</button>
-</nav>
-
-<main>
-<section id="home">
-<h2>Popular Games</h2>
-<p class="small">Welcome to JAN GAMES</p>
-<div id="games"></div>
-
-<div class="coming">
-<h2>MORE COMING SOON</h2>
-<p>New games are being added soon</p>
+<div class="container">
+<div class="games" id="games"></div>
 </div>
-</section>
 
-<section id="player">
-<button class="back" onclick="closeGame()">← Back</button>
-<button onclick="fullscreen()">⛶ Fullscreen</button>
-<h2 id="gameTitle"></h2>
-
-<iframe id="gameFrame"
-allowfullscreen
-allow="fullscreen; autoplay; gamepad"
-referrerpolicy="strict-origin-when-cross-origin">
-</iframe>
-
-<div id="fallback">
-<p>This website may block embedded games.</p>
-<a id="originalLink" target="_blank" rel="noopener">Open the game directly ↗</a>
-</div>
-</section>
-</main>
-
-<footer>Created by Jan Budak</footer>
+<footer>
+Created by Jan Budak
+</footer>
 
 <script>
-const games=[
-{
-name:"FNF Aura Funkin: South America",
-category:"FNF",icon:"🎤",
-url:"https://fnf-games.io/fnf-aura-funkin-at-south-america"
-},
-{
-name:"FNF South Park's Turmoil: Bloodbath",
-category:"FNF",icon:"🎵",
-url:"https://www.play-games.com/game/41116/fnf-south-parks-turmoil-bloodbath.html"
-},
-{
-name:"Friday Night Funkin",
-category:"FNF",icon:"🎧",
-url:"https://www.newgrounds.com/portal/view/770371"
-},
-{
-name:"FNF Mods",
-category:"FNF",icon:"🎶",
-url:"https://fnfmod.org/"
-},
-{
-name:"Counter Terror 2: Global Standout",
-category:"Action",icon:"🎯",
-url:"https://www.play-games.com/game/41128/counter-terror-2-global-standout.html"
-},
-{
-name:"FNAF World",
-category:"FNAF",icon:"🐻",
-url:"https://fnafworld.net/"
-},
-{
-name:"FNAF Games Collection",
-category:"FNAF",icon:"🐰",
-url:"https://fnaf.co/games"
-},
-{
-name:"Pro Racing: Racing 3D",
-category:"Racing",icon:"🏎️",
-url:"https://www.play-games.com/game/40759/pro-racing-racing-3d.html"
-},
-{
-name:"Brakeless",
-category:"Racing",icon:"🚗",
-url:"https://brakeless.io/"
-},
-{
-name:"RaceCraft",
-category:"Racing",icon:"🏁",
-url:"https://playracecraft.nl/"
-},
-{
-name:"Overdrive Racing",
-category:"Racing",icon:"🏎️",
-url:"https://overdriveracing.itch.io/overdrive"
-}
+const games = [
+  ["Impossible Quiz", "https://gamezipper.com/impossible-quiz/?utm_source=embed"],
+  ["Little Alchemy", "https://gamezipper.com/little-alchemy/?utm_source=embed"],
+  ["Checkers", "https://gamezipper.com/checkers/?utm_source=embed"],
+  ["Snake", "https://gamezipper.com/snake/?utm_source=embed"],
+  ["Neon Dash", "https://gamezipper.com/neon-dash/?utm_source=embed"],
+  ["Bridge Builder", "https://gamezipper.com/bridge-builder/?utm_source=embed"],
+  ["Kitchen Rush", "https://gamezipper.com/kitchen-rush/?utm_source=embed"],
+  ["FNF Huggy Wuggy", "https://botstudio.itch.io/huggywuggy"]
 ];
 
-let category="All";
+const container = document.getElementById("games");
 
-function setCategory(value){
-category=value;
-render();
-}
+games.forEach(([name, url]) => {
+  const card = document.createElement("div");
+  card.className = "game";
 
-function render(){
-const search=document.getElementById("search").value.toLowerCase();
+  const title = document.createElement("h2");
+  title.textContent = name;
 
-const list=games.filter(g=>
-(category==="All"||g.category===category)&&
-g.name.toLowerCase().includes(search)
-);
+  const frame = document.createElement("iframe");
+  frame.src = url;
+  frame.allowFullscreen = true;
+  frame.allow = "autoplay; fullscreen; gamepad";
 
-document.getElementById("games").innerHTML=list.map(g=>`
-<div class="game" onclick="openGame(${games.indexOf(g)})">
-<div class="cover">${g.icon}</div>
-<p>${g.name}</p>
-<div class="tag">${g.category}</div>
-</div>
-`).join("");
-}
-
-function openGame(index){
-const game=games[index];
-
-document.getElementById("home").style.display="none";
-document.getElementById("player").style.display="block";
-document.getElementById("gameTitle").textContent=game.name;
-document.getElementById("originalLink").href=game.url;
-document.getElementById("fallback").style.display="block";
-document.getElementById("gameFrame").src=game.url;
-
-window.scrollTo(0,0);
-}
-
-function closeGame(){
-document.getElementById("gameFrame").src="";
-document.getElementById("player").style.display="none";
-document.getElementById("home").style.display="block";
-}
-
-function fullscreen(){
-const frame=document.getElementById("gameFrame");
-if(frame.requestFullscreen)frame.requestFullscreen();
-}
-
-render();
+  card.appendChild(title);
+  card.appendChild(frame);
+  container.appendChild(card);
+});
 </script>
+
 </body>
 </html>
